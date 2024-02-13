@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class CategoryTableSeeder extends Seeder
 {
@@ -14,13 +14,16 @@ class CategoryTableSeeder extends Seeder
     public function run(): void
     {
         Category::create([
-                'name' => 'DC',
-            ]);
+            'uuid' => Str::uuid(),
+            'name' => 'DC'
+        ]);
         Category::create([
-                'name' => 'DISNEY',
-            ]);
+            'uuid' => Str::uuid(),
+            'name' => 'MARVEL'
+        ]);
         Category::create([
-                'name' => 'MARVEL',
-            ]);
+            'uuid' => Str::uuid(),
+            'name' => 'DISNEY'
+        ]);
     }
 }

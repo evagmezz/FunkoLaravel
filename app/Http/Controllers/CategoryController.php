@@ -9,41 +9,57 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::all();
-        if ($categories) {
-            return $categories->toJson();
-        } else {
-            return response()->json(['message' => 'No categories found'], 404);
-        }
+        $categories = Category::search(request('search'))->paginate(5);
+        return view('categories.index', compact('categories'));
     }
 
     public function show($id)
     {
         $category = Category::find($id);
-        if ($category) {
-            return $category->toJson();
-        } else {
-            return response()->json(['message' => 'Category not found'], 404);
-        }
+        return view('categories.show', compact('category'));
+    }
+
+    public function create()
+    {
+        return view('categories.create');
     }
 
     public function store(Request $request)
     {
+        $categoryExist = Category::where('name', $request->name)->first();
+        if ($categoryExist) {
+            return redirect()->back()->withErrors(['message' => 'Category name already exists.']);
+        } else if (!$request->name) {
+            return redirect()->back()->withErrors(['message' => 'Category name is required.']);
+        }
         $category = new Category();
         $category->name = $request->name;
         $category->save();
-        return response()->json(['message' => 'Category created'], 201);
+        return redirect()->route('categories.index')->with('message', 'Category created');
+    }
+
+    public function edit($id)
+    {
+        $category = Category::find($id);
+        return view('categories.edit', compact('category'));
     }
 
     public function update(Request $request, $id)
     {
+        $categoryExist = Category::where('name', $request->name)->first();
+        if ($categoryExist) {
+            return redirect()->back()->withErrors(['message' => 'Category name already exists.']);
+        }
+        else if (!$request->name) {
+            return redirect()->back()->withErrors(['message' => 'Category name is required.']);
+        }
         $category = Category::find($id);
         if ($category) {
             $category->name = $request->name;
             $category->save();
-            return response()->json(['message' => 'Category updated'], 200);
+            return redirect()->route('categories.index')->with('message', 'Category updated');
         } else {
-            return response()->json(['message' => 'Category not found'], 404);
+            return redirect()->back()->withErrors(['message' => 'Category not found']);
         }
     }
 
@@ -51,10 +67,11 @@ class CategoryController extends Controller
     {
         $category = Category::find($id);
         if ($category) {
-            $category->delete();
-            return response()->json(['message' => 'Category deleted'], 200);
+            $category->is_deleted = 1;
+            $category->save();
+            return redirect()->route('categories.index')->with('message', 'Category deleted');
         } else {
-            return response()->json(['message' => 'Category not found'], 404);
+            return redirect()->back()->withErrors(['message' => 'Category not found']);
         }
     }
 }
