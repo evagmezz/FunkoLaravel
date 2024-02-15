@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('stock')->default(0);
             $table->string('image')->default(Funko::$IMAGE_DEFAULT);
             $table->foreignId('category_id');
-            $table->foreign('category_id')->references('uuid')->on('categories');
+            $table->foreign('category_id')->references('id')->on('categories');
             $table->boolean('is_deleted')->default(false);
             $table->timestamps();
         });

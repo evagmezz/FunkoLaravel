@@ -10,14 +10,14 @@ class Category extends Model
 {
     use HasFactory;
     protected $table = 'categories';
-    protected $fillable = ['uuid', 'name', 'is_deleted'];
+    protected $fillable = ['id', 'name', 'is_deleted'];
 
     protected static function boot()
     {
         parent::boot();
 
         static::creating(function ($category) {
-            $category->uuid = Str::uuid();
+            $category->id = Str::uuid();
         });
     }
 

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FunkoController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,14 +22,14 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'funkos'], function () {
     Route::get('/', [FunkoController::class, 'index'])->name('funkos.index');
-    Route::get('/create', [FunkoController::class, 'create'])->name('funkos.create');
-    Route::post('/', [FunkoController::class, 'store'])->name('funkos.store');
+    Route::get('/create', [FunkoController::class, 'create'])->name('funkos.create')->middleware(['auth', 'admin']);
+    Route::post('/', [FunkoController::class, 'store'])->name('funkos.store')->middleware(['auth', 'admin']);
     Route::get('/{id}', [FunkoController::class, 'show'])->name('funkos.show');
-    Route::get('/{id}/edit', [FunkoController::class, 'edit'])->name('funkos.edit');
-    Route::put('/{id}', [FunkoController::class, 'update'])->name('funkos.update');
-    Route::get('/{id}/update-image', [FunkoController::class, 'editImg'])->name('funkos.editImg');
-    Route::patch('/{id}/update-image', [FunkoController::class, 'updateImg'])->name('funkos.updateImg');
-    Route::delete('/{id}', [FunkoController::class, 'destroy'])->name('funkos.destroy');
+    Route::get('/{id}/edit', [FunkoController::class, 'edit'])->name('funkos.edit')->middleware(['auth', 'admin']);
+    Route::put('/{id}', [FunkoController::class, 'update'])->name('funkos.update')->middleware(['auth', 'admin']);
+    Route::get('/{id}/update-image', [FunkoController::class, 'editImg'])->name('funkos.editImg')->middleware(['auth', 'admin']);
+    Route::patch('/{id}/update-image', [FunkoController::class, 'updateImg'])->name('funkos.updateImg')->middleware(['auth', 'admin']);
+    Route::delete('/{id}', [FunkoController::class, 'destroy'])->name('funkos.destroy')->middleware(['auth', 'admin']);
 });
 
 Route::group(['prefix' => 'categories'], function () {
@@ -39,7 +40,9 @@ Route::group(['prefix' => 'categories'], function () {
     Route::get('/{id}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
     Route::put('/{id}', [CategoryController::class, 'update'])->name('categories.update');
     Route::delete('/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
-});
+})->middleware(['auth', 'admin']);
 
 
+Auth::routes();
 
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

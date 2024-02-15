@@ -16,25 +16,29 @@
                         @auth
                             <a class="nav-link btn btn-outline-secondary" href="{{route ('logout')}}">Logout</a>
                         @else
-                            <a class="nav-link btn btn-secondary"href="{{route ('login')}}">Login</a>
+                            <a class="nav-link btn btn-secondary" href="{{route ('login')}}">Login</a>
                         @endauth
                     @endif
                 </li>
                 <li class="nav-item mr-2">
-                        <?php if ($session->isAdmin()): ?>
-                    <a class="nav-link btn btn-outline-secondary" href="create.php">New Funko</a>
-                    <?php endif; ?>
+                    @if (Route::has('admin'))
+                        @auth
+                            <a class="nav-link btn btn-outline-secondary" href="{{route ('create')}}">New Funko</a>
+                        @endauth
+                    @endif
                 </li>
                 <li class="nav-item mr-2">
-                        <?php if ($session->isAdmin()): ?>
-                    <a class="nav-link btn btn-outline-secondary" href="indexCategory.php">Categories</a>
-                    <?php endif; ?>
+                    @if (Route::has('admin'))
+                        @auth
+                            <a class="nav-link btn btn-outline-secondary" href="{{route ('indexCat')}}">Categories</a>
+                        @endauth
+                    @endif
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <span class="navbar-text">
-                        <?php echo htmlspecialchars($username); ?>
+                          {{ auth()->user()->role ?? 'invitado/a' }}
                     </span>
                 </li>
             </ul>

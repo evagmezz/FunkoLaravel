@@ -14,15 +14,15 @@ class CategoryTableSeeder extends Seeder
     public function run(): void
     {
         Category::create([
-            'uuid' => Str::uuid(),
+            'id' => Str::uuid(),
             'name' => 'DC'
         ]);
         Category::create([
-            'uuid' => Str::uuid(),
+            'id' => Str::uuid(),
             'name' => 'MARVEL'
         ]);
         Category::create([
-            'uuid' => Str::uuid(),
+            'id' => Str::uuid(),
             'name' => 'DISNEY'
         ]);
     }

@@ -13,7 +13,7 @@ class FunkoController extends Controller
 {
     public function index()
     {
-        $funkos = Funko::search(request('search'))->orderBy('id', 'asc')->paginate(5);
+        $funkos = Funko::all();
         return view('funkos.index', compact('funkos'));
     }
 
@@ -40,7 +40,7 @@ class FunkoController extends Controller
         ], $this->messages());
 
         if ($validator->fails()) {
-            flash ($this->messages())->error()->important();
+            flash($this->messages())->error()->important();
         }
 
         try {
@@ -65,6 +65,7 @@ class FunkoController extends Controller
     public function update(Request $request, $id)
     {
         $funko = Funko::find($id);
+        if ($funko) {
             $validator = Validator::make($request->all(), [
                 'name' => 'required|max:255|min:2|string',
                 'price' => 'required|numeric|min:1',
@@ -74,19 +75,18 @@ class FunkoController extends Controller
             ], $this->messages());
 
             if ($validator->fails()) {
-                flash ($this->messages())->error()->important();
+                flash($this->messages())->error()->important();
+                return redirect()->back()->withInput();
             }
-            try {
-                $funko = Funko::find($id);
-                $funko->update($request->all());
-                $funko->category_id = $request->category_id;
-                $funko->save();
-                flash('Funko updated')->success()->important();
-                return redirect()->route('funkos.index');
-            } catch (Exception $e) {
-                flash('Cannot update Funko' . $e->getMessage())->error()->important();
-                return redirect()->back();
-            }
+            $funko->update($request->all());
+            $funko->category_id = $request->category_id;
+            $funko->save();
+            flash('Funko updated')->success()->important();
+            return redirect()->route('funkos.index');
+        } else {
+            flash('Cannot update Funko')->error()->important();
+            return redirect()->back();
+        }
     }
 
     public function editImg($id)
@@ -98,16 +98,16 @@ class FunkoController extends Controller
     public function updateImg(Request $request, $id)
     {
         $funko = Funko::find($id);
-        $validator = Validator::make($request->all(), [
-            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048'
-        ], $this->messages());
+        if ($funko) {
+            $validator = Validator::make($request->all(), [
+                'image' => 'required|image|mimes:jpeg,png,jpg|max:2048'
+            ], $this->messages());
 
-        if ($validator->fails()) {
-            flash ($this->messages())->error()->important();
-        }
-        try {
-            $funko = Funko::find($id);
-            if($funko->image != Funko::$IMAGE_DEFAULT && Storage::exists($funko->image)) {
+            if ($validator->fails()) {
+                flash($this->messages())->error()->important();
+                return redirect()->back()->withInput();
+            }
+            if ($funko->image != Funko::$IMAGE_DEFAULT && Storage::exists($funko->image)) {
                 Storage::delete($funko->image);
             }
             $image = $request->file('image');
@@ -117,8 +117,8 @@ class FunkoController extends Controller
             $funko->save();
             flash('Funko image updated')->success()->important();
             return redirect()->route('funkos.index');
-        }catch (Exception $e) {
-            flash('Cannot update Funko image' . $e->getMessage())->error()->important();
+        } else {
+            flash('Cannot update Funko image')->error()->important();
             return redirect()->back();
         }
     }
@@ -126,16 +126,16 @@ class FunkoController extends Controller
 
     public function destroy($id)
     {
-        try {
-            $funko = Funko::find($id);
+        $funko = Funko::find($id);
+        if ($funko) {
             if ($funko->image != Funko::$IMAGE_DEFAULT && Storage::exists($funko->image)) {
                 Storage::delete($funko->image);
             }
             $funko->delete();
             flash('Funko deleted')->success()->important();
             return redirect()->route('funkos.index');
-        } catch (Exception $e) {
-            flash('Cannot delete Funko' . $e->getMessage())->error()->important();
+        } else {
+            flash('Cannot delete Funko')->error()->important();
             return redirect()->back();
         }
     }
