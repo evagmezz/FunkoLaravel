@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Dotenv\Util\Str;
 use Illuminate\Database\Eloquent\Model;
 
 class Funko extends Model
@@ -12,6 +13,11 @@ class Funko extends Model
 
     protected $fillable = ['name', 'price', 'stock', 'image', 'category_id', 'is_deleted'];
 
+
+    public function scopeSearch($query, $search)
+    {
+        return $query->where('name', 'LIKE', "%$search%");
+    }
 
     public function category()
     {

@@ -11,10 +11,10 @@ use Illuminate\Support\Facades\Validator;
 
 class FunkoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $funkos = Funko::all();
-        return view('funkos.index', compact('funkos'));
+        $funkos = Funko::search($request->search)->orderBy('id', 'asc')->paginate(3);
+        return view('funkos.index')->with('funkos', $funkos);
     }
 
     public function show($id)
@@ -40,17 +40,17 @@ class FunkoController extends Controller
         ], $this->messages());
 
         if ($validator->fails()) {
-            flash($this->messages())->error()->important();
+           // $this->flash($this->messages())->error()->important();
         }
 
         try {
             $funko = new Funko($request->all());
             $funko->category_id = $request->category_id;
             $funko->save();
-            flash('Funko created')->success()->important();
+           // flash('Funko created')->success()->important();
             return redirect()->route('funkos.index');
         } catch (Exception $e) {
-            flash('Cannot create Funko' . $e->getMessage())->error()->important();
+            //flash('Cannot create Funko' . $e->getMessage())->error()->important();
             return redirect()->back();
         }
     }
@@ -75,16 +75,16 @@ class FunkoController extends Controller
             ], $this->messages());
 
             if ($validator->fails()) {
-                flash($this->messages())->error()->important();
+                //flash($this->messages())->error()->important();
                 return redirect()->back()->withInput();
             }
             $funko->update($request->all());
             $funko->category_id = $request->category_id;
             $funko->save();
-            flash('Funko updated')->success()->important();
+            //flash('Funko updated')->success()->important();
             return redirect()->route('funkos.index');
         } else {
-            flash('Cannot update Funko')->error()->important();
+            //flash('Cannot update Funko')->error()->important();
             return redirect()->back();
         }
     }
@@ -92,7 +92,7 @@ class FunkoController extends Controller
     public function editImg($id)
     {
         $funko = Funko::find($id);
-        return view('funkos.editImg', compact('funko'));
+        return view('funkos.image', compact('funko'));
     }
 
     public function updateImg(Request $request, $id)
@@ -104,7 +104,7 @@ class FunkoController extends Controller
             ], $this->messages());
 
             if ($validator->fails()) {
-                flash($this->messages())->error()->important();
+              //  flash($this->messages())->error()->important();
                 return redirect()->back()->withInput();
             }
             if ($funko->image != Funko::$IMAGE_DEFAULT && Storage::exists($funko->image)) {
@@ -115,10 +115,10 @@ class FunkoController extends Controller
             $fileName = time() . '.' . $extension;
             $funko->image = $image->storeAs('funkos', $fileName, 'public');
             $funko->save();
-            flash('Funko image updated')->success()->important();
+            //flash('Funko image updated')->success()->important();
             return redirect()->route('funkos.index');
         } else {
-            flash('Cannot update Funko image')->error()->important();
+           // flash('Cannot update Funko image')->error()->important();
             return redirect()->back();
         }
     }
@@ -132,10 +132,10 @@ class FunkoController extends Controller
                 Storage::delete($funko->image);
             }
             $funko->delete();
-            flash('Funko deleted')->success()->important();
+            //flash('Funko deleted')->success()->important();
             return redirect()->route('funkos.index');
         } else {
-            flash('Cannot delete Funko')->error()->important();
+            //flash('Cannot delete Funko')->error()->important();
             return redirect()->back();
         }
     }
@@ -161,4 +161,5 @@ class FunkoController extends Controller
             'category_id.exists' => 'Funko category does not exist.'
         ];
     }
+
 }

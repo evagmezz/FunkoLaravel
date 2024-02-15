@@ -1,6 +1,6 @@
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="{{ url('index') }}">
+        <a class="navbar-brand" href="{{ url('/funkos') }}">
             <img alt="Logo" class="d-inline-block align-text-top" height="30" src="{{ asset('images/loogo.png') }}"
                  width="30">
             Funkolandia
@@ -21,11 +21,7 @@
                     @endif
                 </li>
                 <li class="nav-item mr-2">
-                    @if (Route::has('admin'))
-                        @auth
-                            <a class="nav-link btn btn-outline-secondary" href="{{route ('create')}}">New Funko</a>
-                        @endauth
-                    @endif
+                            <a class="nav-link btn btn-outline-secondary" href="{{route ('funkos.create')}}">New Funko</a>
                 </li>
                 <li class="nav-item mr-2">
                     @if (Route::has('admin'))
