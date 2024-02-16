@@ -19,7 +19,7 @@ Route::group(['prefix' => 'funkos'], function () {
     Route::put('/edit/{id}', [FunkoController::class, 'update'])->name('funkos.update')->middleware(['auth', 'admin']);
     Route::get('/update-image/{id}', [FunkoController::class, 'editImg'])->name('funkos.editImg')->middleware(['auth', 'admin']);
     Route::patch('/update-image/{id}', [FunkoController::class, 'updateImg'])->name('funkos.updateImg')->middleware(['auth', 'admin']);
-    Route::delete('/{id}', [FunkoController::class, 'destroy'])->name('funkos.destroy')->middleware(['auth', 'admin']);
+    Route::delete('/delete/{id}', [FunkoController::class, 'destroy'])->name('funkos.destroy')->middleware(['auth', 'admin']);
 });
 
 Route::group(['prefix' => 'category'], function () {

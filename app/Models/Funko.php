@@ -4,9 +4,11 @@ namespace App\Models;
 
 use Dotenv\Util\Str;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Funko extends Model
 {
+    use HasFactory;
     protected $table = 'funkos';
     public static string $IMAGE_DEFAULT = 'https://via.placeholder.com/150';
 

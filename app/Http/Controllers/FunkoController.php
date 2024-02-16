@@ -44,7 +44,7 @@ class FunkoController extends Controller
         ], $this->messages());
 
         if ($validator->fails()) {
-            $this->flash($this->messages())->error();
+           flash($this->messages())->error();
         }
         try {
             $funko = new Funko($request->all());
@@ -62,7 +62,12 @@ class FunkoController extends Controller
     {
         $funko = Funko::find($id);
         $categories = Category::all();
-        return view('funkos.edit', compact('funko', 'categories'));
+        if (!$funko) {
+            flash('Funko not found')->error();
+            return redirect()->route('funkos.index');
+        } else {
+            return view('funkos.edit', compact('funko', 'categories'));
+        }
     }
 
     public function update(Request $request, $id)
@@ -138,10 +143,10 @@ class FunkoController extends Controller
             }
             $funko->delete();
             flash('Funko deleted')->success();
-            return redirect()->route('funkos.index');
+            return redirect('/funkos');
         } else {
             flash('Cannot delete Funko')->error();
-            return redirect()->back();
+            return redirect()->route('funkos.index');
         }
     }
 
