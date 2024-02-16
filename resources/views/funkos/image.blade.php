@@ -26,7 +26,6 @@
             </div>
             <div class="card-body">
                 <dl class="row">
-                    <dt class="col-sm-2">Image:</dt>
                     <dd class="col-sm-10"> @if($funko->image != Funko::$IMAGE_DEFAULT)
                             <img alt="Imagen del funko" class="img-fluid"
                                  src="{{ asset('storage/funko/' . $funko->image) }}">
@@ -35,18 +34,18 @@
                         @endif
                     </dd>
                 </dl>
-
                 <form action="{{ route("funkos.updateImg", $funko->id) }}" enctype="multipart/form-data"
                       method="post">
+                    @csrf
+                    @method('PATCH')
                     <div class="form-group">
-                        <label for="image">Image:</label>
                         <input accept="image/*" class="form-control-file" id="image" name="image" required type="file">
                         <small class="text-danger"></small>
                         <input name="id" value="{{ $funko->id }}" type="hidden">
                     </div>
 
-                    <button class="btn btn-primary" type="submit">Actualizar</button>
-                    <a class="btn btn-primary" href="{{ route('funkos.index') }}">Volver</a>
+                    <button class="btn btn-pink" type="submit">Update</button>
+                    <a class="btn btn-gray" href="{{ route('funkos.index') }}">Back</a>
                 </form>
             </div>
         </div>

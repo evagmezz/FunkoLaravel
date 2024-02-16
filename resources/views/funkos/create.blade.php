@@ -1,7 +1,7 @@
 @php use App\Models\Funko; @endphp
 @extends('main')
 
-@section('title', 'Crear')
+@section('title', 'Create')
 
 @section('content')
 
@@ -16,48 +16,42 @@
         </div>
         <br/>
     @endif
-<body>
-<div class="container py-5 md-5">
-    <div class="row">
-        <div class="col-md-6 offset-md-3 mt-5">
-            <h1 class="text-center">Crear Funko</h1>
+    <body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3 mt-5">
+                <h1 class="text-center">Create Funko</h1>
 
-            <form action="{{ route('funkos.store') }}" enctype="multipart/form-data" method="POST">
+                <form action="{{ route('funkos.store') }}" enctype="multipart/form-data" method="POST" class="p-5 blue-background rounded">                    @csrf
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input class="form-control" id="name" name="name" type="text" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="stock">Stock:</label>
+                        <input class="form-control" id="stock" name="stock" type="number" step="0.01" required
+                               value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="price">Price:</label>
+                        <input class="form-control" id="price" name="price" type="number" step="0.01" required
+                               value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Category:</label>
+                        <select class="form-control" id="category_id" name="category_id" required>
+                            <option value="">Select a category</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
 
-                <div class="form-group">
-                    <label for="name">Name:</label>
-                    <input class="form-control" id="name" name="name" type="text" required>
-                </div>
-                <div class="form-group">
-                    <label for="price">Price:</label>
-                    <input class="form-control" id="price" name="price" type="number" required
-                           value="0">
-                </div>
-                <div class="form-group">
-                    <label for="stock">Stock:</label>
-                    <input class="form-control" id="stock" name="stock" type="number" required
-                           value="0">
-                </div>
-
-                <div class="form-group">
-                    <label for="image">Image:</label>
-                    <input accept="image/*" class="form-control-file" id="image" name="image" required type="file">
-                    <small class="text-danger"></small>
-                </div>
-                <div class="form-group">
-                    <label for="category">Category:</label>
-                    <select class="form-control" id="category" name="category" required>
-                        <option value="">Seleccione una categoría</option>
-                        @foreach($categories as $category)
-                            <option value="{{ $category->id }}">{{ $category->name }}</option>
-                    @endforeach
-                </div>
-
-                <button class="btn btn-primary" type="submit">Crear</button>
-                <a class="btn btn-primary" href="{{ route('funkos.index') }}">Volver</a>
-            </form>
+                    <button class="btn btn-pink btn-block" type="submit">Create</button>
+                    <a class="btn btn-gray btn-block mt-2" href="{{ route('funkos.index') }}">Back</a>
+                </form>
+            </div>
         </div>
     </div>
-</div>
-</body>
+    </body>
 @endsection

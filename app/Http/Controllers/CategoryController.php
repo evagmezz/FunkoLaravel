@@ -7,59 +7,67 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::search(request('search'))->paginate(5);
-        return view('categories.index', compact('categories'));
+        $categories = Category::search($request->search)->orderBy('name', 'asc')->paginate(5);
+
+        return view('category.index')->with('categories', $categories);
     }
 
     public function show($id)
     {
         $category = Category::find($id);
-        return view('categories.show', compact('category'));
+        if (!$category) {
+            flash('Category not found')->error();
+        }
+        return view('category.show', compact('category'));
     }
 
-    public function create()
+    public function store()
     {
-        return view('categories.create');
+        return view('category.create');
     }
 
-    public function store(Request $request)
+    public function create(Request $request)
     {
         $categoryExist = Category::where('name', $request->name)->first();
         if ($categoryExist) {
-            return redirect()->back()->withErrors(['message' => 'Category name already exists.']);
+            flash('Category name already exists')->error();
+            return redirect()->back();
         } else if (!$request->name) {
-            return redirect()->back()->withErrors(['message' => 'Category name is required.']);
+            flash('Category name is required')->error();
+            return redirect()->back();
         }
         $category = new Category();
         $category->name = $request->name;
         $category->save();
-        return redirect()->route('categories.index')->with('message', 'Category created');
+        flash('Category created')->success();
+        return redirect()->route('category.index');
     }
 
     public function edit($id)
     {
         $category = Category::find($id);
-        return view('categories.edit', compact('category'));
+        return view('category.edit', compact('category'));
     }
 
     public function update(Request $request, $id)
     {
         $categoryExist = Category::where('name', $request->name)->first();
         if ($categoryExist) {
-            return redirect()->back()->withErrors(['message' => 'Category name already exists.']);
+           flash('Category name already exists')->error();
         }
         else if (!$request->name) {
-            return redirect()->back()->withErrors(['message' => 'Category name is required.']);
+            flash('Category name is required')->error();
         }
         $category = Category::find($id);
         if ($category) {
             $category->name = $request->name;
             $category->save();
-            return redirect()->route('categories.index')->with('message', 'Category updated');
+            return redirect()->route('category.index')->with('message', 'Category updated');
         } else {
-            return redirect()->back()->withErrors(['message' => 'Category not found']);
+            flash('Category not found')->error();
+            return redirect()->back();
         }
     }
 
@@ -69,9 +77,25 @@ class CategoryController extends Controller
         if ($category) {
             $category->is_deleted = 1;
             $category->save();
-            return redirect()->route('categories.index')->with('message', 'Category deleted');
+            flash('Category deleted')->success();
+            return redirect()->route('category.index');
         } else {
-            return redirect()->back()->withErrors(['message' => 'Category not found']);
+            flash('Category not found')->error();
+            return redirect()->back();
+        }
+    }
+
+    public function activate($id)
+    {
+        $category = Category::find($id);
+        if ($category) {
+            $category->is_deleted = 0;
+            $category->save();
+            flash('Category activated')->success();
+            return redirect()->route('category.index');
+        } else {
+            flash('Category not found')->error();
+            return redirect()->back();
         }
     }
 }

@@ -1,4 +1,4 @@
-<footer class="bg-dark text-light text-center py-3">
+<footer class="bg-dark text-light text-center py-1">
     <div class="container">
         <div>
             <section class="mb-4">

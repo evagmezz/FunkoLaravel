@@ -10,14 +10,13 @@
 </head>
 
 <body>
-
+@include('header')
 <div class="container">
 
-    @include('header')
 
-  {{--  <div class="mx-2 my-2">
+    <div class="mx-2 my-2">
         @include('flash::message')
-    </div>--}}
+    </div>
 
     @yield('content')
 

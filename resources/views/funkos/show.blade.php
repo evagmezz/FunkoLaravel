@@ -1,7 +1,7 @@
 @php use App\Models\Funko; @endphp
 @extends('main')
 
-@section('title', 'Detalles')
+@section('title', 'Details')
 
 @section('content')
 
@@ -10,31 +10,22 @@
             <h1>{{ $funko->name }}</h1>
         </div>
         <div class="card-body">
-            <div class="row">
-                <div class="col-sm-6">
-                    <dl>
-                        <dt>ID:</dt>
-                        <dd>{{ $funko->id }}</dd>
-                        <dt>Stock:</dt>
-                        <dd>{{ $funko->stock }}</dd>
-                        <dt>Price:</dt>
-                        <dd>{{ $funko->price }}</dd>
-                        <dt>Category:</dt>
-                        <dd>{{ $funko->category->name }}</dd>
-                    </dl>
-                </div>
-                <div class="col-sm-6">
-                    @if($funko->image != Funko::$IMAGE_DEFAULT)
-                        <img alt="Imagen del funko" class="img-fluid"
-                             src="{{ asset('storage/funko/' . $funko->image) }}">
-                    @else
-                        <img alt="Imagen por defecto" class="img-fluid" src="{{ Funko::$IMAGE_DEFAULT }}">
-                    @endif
-                </div>
-            </div>
+            @if($funko->image != Funko::$IMAGE_DEFAULT)
+                <img alt="Imagen del funko" class="img-fluid mb-3" style="width: 80%;"
+                src="{{ asset('storage/funko/' . $funko->image) }}">
+            @else
+                <img alt="Imagen por defecto" class="img-fluid mb-3" style="width: 80%;"
+                src="{{ Funko::$IMAGE_DEFAULT }}">
+            @endif
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>ID:</strong> {{ $funko->id }}</li>
+                <li class="list-group-item"><strong>Stock:</strong> {{ $funko->stock }}</li>
+                <li class="list-group-item"><strong>Price:</strong> &euro;{{ $funko->price }}</li>
+                <li class="list-group-item"><strong>Category:</strong> {{ $funko->category->name }}</li>
+            </ul>
         </div>
-        <div class="card-footer">
-            <a class="btn btn-primary" href="{{ route('funkos.index') }}">Volver</a>
+        <div class="card-footer text-center">
+            <a class="btn btn-gray" href="{{ route('funkos.index') }}">Back</a>
         </div>
     </div>
 @endsection

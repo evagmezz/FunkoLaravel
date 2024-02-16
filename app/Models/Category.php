@@ -14,6 +14,14 @@ class Category extends Model
     protected $table = 'categories';
     protected $fillable = ['id', 'name', 'is_deleted'];
 
+
+    public function scopeSearch($query, $search)
+    {
+        if ($search) {
+            return $query->where('name', 'LIKE', "%$search%");
+        }
+    }
+
     protected static function boot()
     {
         parent::boot();

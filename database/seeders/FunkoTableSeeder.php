@@ -13,8 +13,8 @@ class FunkoTableSeeder extends Seeder
 
         Funko::create([
             'name' => 'Batman',
-            'price' => 30,
-            'stock' => 10,
+            'price' => 37,
+            'stock' => 40,
             'image' => 'batman.png',
             'category_id' => Category::where('name', 'DC')->first()->id,
             'is_deleted' => false
@@ -22,19 +22,46 @@ class FunkoTableSeeder extends Seeder
 
         Funko::create([
             'name' => 'Merida',
-            'price' => 30,
-            'stock' => 10,
-            'image' => 'merida.jpg',
+            'price' => 27,
+            'stock' => 50,
+            'image' => 'merida.png',
             'category_id' => Category::where('name', 'DISNEY')->first()->id,
             'is_deleted' => false
         ]);
 
         Funko::create([
             'name' => 'Spiderman',
-            'price' => 30,
-            'stock' => 10,
+            'price' => 40,
+            'stock' => 56,
             'image' => 'spiderman.jpg',
             'category_id' => Category::where('name', 'MARVEL')->first()->id,
+            'is_deleted' => false
+        ]);
+
+        Funko::create([
+            'name' => 'Ironman',
+            'price' => 46,
+            'stock' => 80,
+            'image' => 'ironmaan.png',
+            'category_id' => Category::where('name', 'MARVEL')->first()->id,
+            'is_deleted' => false
+        ]);
+
+        Funko::create([
+            'name' => 'Miercoles Addams',
+            'price' => 35,
+            'stock' => 40,
+            'image' => 'miercolesAddams.png',
+            'category_id' => Category::where('name', 'DISNEY')->first()->id,
+            'is_deleted' => false
+        ]);
+
+        Funko::create([
+            'name' => 'PIKACHU',
+            'price' => 30,
+            'stock' => 60,
+            'image' => 'pikachu.jpg',
+            'category_id' => Category::where('name', 'SONY')->first()->id,
             'is_deleted' => false
         ]);
     }

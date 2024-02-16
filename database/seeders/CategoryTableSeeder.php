@@ -19,5 +19,8 @@ class CategoryTableSeeder extends Seeder
         Category::create([
             'name' => 'DISNEY'
         ]);
+        Category::create([
+            'name' => 'SONY'
+        ]);
     }
 }
