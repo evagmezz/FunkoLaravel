@@ -53,7 +53,8 @@ class FunkoControllerTest extends TestCase
 
     public function testCreate()
     {
-        $response = $this->get('/funkos/create');
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->get('/funkos/create');
         $response->assertOk();
         $response->assertViewIs('funkos.create');
     }
