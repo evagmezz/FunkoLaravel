@@ -34,19 +34,24 @@
                         @endif
                     </dd>
                 </dl>
-                <form action="{{ route("funkos.updateImg", $funko->id) }}" enctype="multipart/form-data"
-                      method="post">
-                    @csrf
-                    @method('PATCH')
-                    <div class="form-group">
-                        <input accept="image/*" class="form-control-file" id="image" name="image" required type="file">
-                        <small class="text-danger"></small>
-                        <input name="id" value="{{ $funko->id }}" type="hidden">
-                    </div>
+                @if(auth()->check() && auth()->user()->isAdmin())
+                    <form action="{{ route("funkos.updateImg", $funko->id) }}" enctype="multipart/form-data"
+                          method="post">
+                        @csrf
+                        @method('PATCH')
+                        <div class="form-group">
+                            <input accept="image/*" class="form-control-file" id="image" name="image" required
+                                   type="file">
+                            <small class="text-danger"></small>
+                            <input name="id" value="{{ $funko->id }}" type="hidden">
+                        </div>
 
-                    <button class="btn btn-pink" type="submit">Update</button>
+                        <button class="btn btn-pink" type="submit">Update</button>
+                        <a class="btn btn-gray" href="{{ route('funkos.index') }}">Back</a>
+                    </form>
+                @else
                     <a class="btn btn-gray" href="{{ route('funkos.index') }}">Back</a>
-                </form>
+                @endif
             </div>
         </div>
     </div>

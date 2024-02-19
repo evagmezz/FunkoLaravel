@@ -31,6 +31,11 @@ class Category extends Model
         });
     }
 
+    public function hasFunko()
+    {
+        return $this->funkos()->count() > 0;
+    }
+
     public function funkos()
     {
         return $this->hasMany(Funko::class);

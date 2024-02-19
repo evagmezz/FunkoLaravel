@@ -31,8 +31,10 @@
                         <td class="text-center">
                             <a href="{{ route('funkos.show', $funko->id) }}" class="btn btn-pink">Details</a>
                             @if(auth()->check() && auth()->user()->isAdmin())
-                                <a href="{{ route('funkos.editImg', $funko->id) }}" class="btn btn-pink">Image</a>
                                 <a href="{{ route('funkos.edit', $funko->id) }}" class="btn btn-gray">Edit</a>
+                            @endif
+                                <a href="{{ route('funkos.editImg', $funko->id) }}" class="btn btn-pink">Image</a>
+                            @if(auth()->check() && auth()->user()->isAdmin())
                                 <form action="{{ route('funkos.destroy', $funko->id) }}" method="POST"
                                       style="display: inline;">
                                     @csrf
@@ -51,7 +53,7 @@
         @else
             <p class='lead text-center'><em>There are no funkos to display</em></p>
         @endif
-        <div class="pagination-container">
+        <div class="pagination-container my-custom-class">
             {{ $funkos->links('pagination::bootstrap-5') }}
         </div>
     </div>

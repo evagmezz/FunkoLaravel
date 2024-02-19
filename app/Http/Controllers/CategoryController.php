@@ -75,10 +75,15 @@ class CategoryController extends Controller
     {
         $category = Category::find($id);
         if ($category) {
+            if(!$category->hasFunko()){
             $category->is_deleted = 1;
             $category->save();
             flash('Category deleted')->success();
             return redirect()->route('category.index');
+            } else {
+                flash('Category has funkos assigned')->error();
+                return redirect()->back();
+            }
         } else {
             flash('Category not found')->error();
             return redirect()->back();
