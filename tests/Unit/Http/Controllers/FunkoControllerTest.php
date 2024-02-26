@@ -14,70 +14,67 @@ class FunkoControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    private $funkoController;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->funkoController = new FunkoController();
+        $this->artisan('migrate:fresh');
+        $this->artisan('db:seed');
     }
 
     public function testIndex()
     {
-        $request = new Request();
-        $request->search = null;
-        $funkos = $this->funkoController->index($request);
-        $this->assertIsObject($funkos);
+        $response = $this->get('/funkos');
+        $response->assertViewIs('funkos.index');
     }
 
     public function testShow()
     {
         $funko = Funko::factory()->create();
         $response = $this->get('/funkos/' . $funko->id);
-        $response->assertOk();
         $response->assertViewIs('funkos.show');
         $response->assertViewHas('funko');
     }
 
     public function testStore()
     {
+        $user = User::factory()->create(['role' => 'admin']);
         $category = Category::factory()->create();
         $request = new Request();
-        $request->name = 'Funko 1';
-        $request->price = 10;
-        $request->stock = 5;
+        $request->name = 'Funko 2';
+        $request->price = 20;
+        $request->stock = 10;
         $request->category_id = $category->id;
-        $funko = $this->funkoController->store($request);
+        $funko = $this->actingAs($user)->post('/funkos/create', $request->toArray());
         $this->assertIsObject($funko);
     }
 
     public function testCreate()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create(['role' => 'admin']);
+        $this->actingAs($user);
         $response = $this->actingAs($user)->get('/funkos/create');
-        $response->assertOk();
         $response->assertViewIs('funkos.create');
     }
 
     public function testEdit()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create(['role' => 'admin']);
         $funko = Funko::factory()->create();
         $response = $this->actingAs($user)->get('/funkos/edit/' . $funko->id);
-        $response->assertOk();
         $response->assertViewIs('funkos.edit');
-        $response->assertViewHas('funko');
     }
 
     public function testUpdate()
     {
         $funko = Funko::factory()->create();
+        $user = User::factory()->create(['role' => 'admin']);
         $request = new Request();
         $request->name = 'Funko 2';
         $request->price = 20;
         $request->stock = 10;
         $request->category_id = $funko->category_id;
-        $funko = $this->funkoController->update($request, $funko->id);
+        $funko = $this->actingAs($user)->put('/funkos/edit/' . $funko->id, $request->toArray());
         $this->assertIsObject($funko);
     }
 

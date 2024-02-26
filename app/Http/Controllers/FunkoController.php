@@ -39,12 +39,11 @@ class FunkoController extends Controller
             'name' => 'required|max:255|min:2|string',
             'price' => 'required|numeric|min:1',
             'stock' => 'required|integer|min:0',
-            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'category_id' => 'required|exists:categories,id'
         ], $this->messages());
 
         if ($validator->fails()) {
-           flash($this->messages())->error();
+            return redirect()->back()->withErrors($validator)->withInput();
         }
         try {
             $funko = new Funko($request->all());
@@ -82,8 +81,7 @@ class FunkoController extends Controller
             ], $this->messages());
 
             if ($validator->fails()) {
-                flash($this->messages())->error();
-                return response()->json(['errors' => $validator->errors(), 400]);
+                return redirect()->back()->withErrors($validator)->withInput();
             }
             $funko->name = $request->name;
             $funko->price = $request->price;

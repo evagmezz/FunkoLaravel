@@ -19,6 +19,7 @@ class CategoryController extends Controller
         $category = Category::find($id);
         if (!$category) {
             flash('Category not found')->error();
+            return redirect()->back();
         }
         return view('category.show', compact('category'));
     }

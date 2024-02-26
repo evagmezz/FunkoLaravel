@@ -24,8 +24,8 @@
                 <tbody>
                 @foreach ($funkos as $funko)
                     <tr>
-                        <td class="text-center"><img src="{{ asset('storage/funko/' . $funko->image) }}"
-                                                     alt="Image of funko" style="width: 100px;"></td>
+                        <td class="text-center"><a href="{{ route('funkos.show', $funko->id) }}"><img src="{{ asset('storage/funko/' . $funko->image) }}"
+                                                     alt="Image of funko" style="width: 100px;"></a></td>
                         <td class="text-center">{{ $funko->name }}</td>
                         <td class="text-center">&euro;{{ $funko->price }}</td>
                         <td class="text-center">
