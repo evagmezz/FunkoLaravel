@@ -17,7 +17,7 @@
         <br/>
     @endif
     <body>
-    <div class="container">
+    <div class="container mb-5">
         <div class="row">
             <div class="col-md-6 offset-md-3 mt-5">
                 <h1 class="text-center">Create Funko</h1>

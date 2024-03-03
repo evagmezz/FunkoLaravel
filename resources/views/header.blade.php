@@ -24,12 +24,19 @@
                     @endif
                 </li>
                 @if(auth()->check() && auth()->user()->isAdmin())
-                <li class="nav-item mr-2">
-                            <a class="nav-link btn btn-outline-secondary" href="{{route ('funkos.create')}}">New Funko</a>
-                </li>
-                <li class="nav-item mr-2">
-                            <a class="nav-link btn btn-outline-secondary" href="{{route ('category.index')}}">Categories</a>
-                </li>
+                    <li class="nav-item mr-2">
+                        <a class="nav-link btn btn-outline-secondary" href="{{route ('funkos.create')}}">New Funko</a>
+                    </li>
+                    @if  (Route::currentRouteName() == 'category.index')
+                        <li class="nav-item mr-2">
+                            <a class="nav-link btn btn-outline-secondary" href="{{route ('funkos.index')}}">Funkos</a>
+                        </li>
+                    @else
+                        <li class="nav-item mr-2">
+                            <a class="nav-link btn btn-outline-secondary"
+                               href="{{route ('category.index')}}">Categories</a>
+                        </li>
+                    @endif
                 @endif
             </ul>
             <ul class="navbar-nav ml-auto">
